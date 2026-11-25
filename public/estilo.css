@@ -169,3 +169,7 @@ form.formulario{display:flex;flex-direction:column;gap:20px}
   .cabecera .wrap{padding-top:12px;padding-bottom:8px}
   .pestanas{width:100%}
 }
+
+
+/* Cuentos con margen justificado */
+article .prosa{text-align:justify;hyphens:auto;-webkit-hyphens:auto}
