@@ -1,0 +1,20 @@
+<%- include('../partials/cabeza') %>
+<main class="admin">
+  <div class="wrap estrecho" style="max-width:900px">
+    <a href="/admin" class="volver" style="margin-top:0">← Volver al panel</a>
+    <h1 style="margin-top:16px">Editar: <%= p.titulo %></h1>
+    <div class="caja">
+      <form method="post" action="/admin/paginas/<%= p.clave %>" enctype="multipart/form-data" class="formulario">
+        <div class="campo"><label for="titulo">Título</label><input type="text" id="titulo" name="titulo" value="<%= p.titulo %>" required></div>
+        <div class="campo"><label for="bajada">Bajada</label><input type="text" id="bajada" name="bajada" value="<%= p.bajada %>"></div>
+        <div class="campo"><label for="cuerpo">Texto</label><textarea class="largo" id="cuerpo" name="cuerpo" style="min-height:320px"><%= p.cuerpo %></textarea></div>
+        <div class="campo"><label for="imagen">Foto <span class="ayuda">(opcional; ideal para "Sobre mí")</span></label><input type="file" id="imagen" name="imagen" accept="image/jpeg,image/png,image/webp"></div>
+        <% if (p.imagen_id) { %>
+          <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap"><img class="miniatura" src="/img/<%= p.imagen_id %>" alt="Foto actual"><label class="check"><input type="checkbox" name="quitar_imagen"> Quitar foto</label></div>
+        <% } %>
+        <div class="barra-acciones"><button class="btn btn-negro" type="submit">Guardar</button><a class="link-simple" href="/<%= p.clave %>" target="_blank">Ver en el sitio</a></div>
+      </form>
+    </div>
+  </div>
+</main>
+<%- include('../partials/pie') %>

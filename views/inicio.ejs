@@ -1,0 +1,51 @@
+<%- include('partials/cabeza') %>
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-texto">
+        <span class="eyebrow">Escritor · Profesor de castellano · Director de escuela</span>
+        <h1>Libros directos a la vena, <em>sin anestesia.</em></h1>
+        <p>Cuentos sobre lo que se barre bajo la alfombra y un manual de oficio para quienes dirigen escuelas. Escritos con la claridad del bisturí y la compasión de quien ya sangró.</p>
+        <div class="botones">
+          <a class="btn btn-amarillo" href="/libros">Ver mis libros</a>
+          <a class="btn btn-borde" href="/cuentos">Leer un cuento gratis</a>
+        </div>
+      </div>
+      <% const portadas = libros.filter(l => l.portada_id); if (portadas.length) { %>
+      <div class="hero-libros" aria-hidden="true">
+        <div class="pila">
+          <% if (portadas[1]) { %><img class="atras" src="/img/<%= portadas[1].portada_id %>" alt=""><% } %>
+          <img class="adelante" src="/img/<%= portadas[0].portada_id %>" alt="">
+        </div>
+      </div>
+      <% } %>
+    </div>
+  </section>
+
+  <section class="clara">
+    <div class="wrap seccion">
+      <div class="encabezado-seccion">
+        <div><span class="eyebrow">Mis libros</span><h2>Dos libros, dos venas</h2></div>
+        <a class="ver-todo" href="/libros">Todos los libros →</a>
+      </div>
+      <div class="grilla">
+        <% libros.slice(0, 2).forEach(l => { %><%- include('partials/tarjeta-libro', { l }) %><% }) %>
+      </div>
+    </div>
+  </section>
+
+  <section class="clara" style="border-top:1px solid #E4DCCD">
+    <div class="wrap seccion">
+      <div class="encabezado-seccion">
+        <div><span class="eyebrow">Un cuento a la vena</span><h2>Para leer ahora</h2></div>
+        <a class="ver-todo" href="/cuentos">Todos los cuentos →</a>
+      </div>
+      <% if (cuentos.length) { %>
+        <div class="lista-cuentos"><% cuentos.forEach(c => { %><%- include('partials/tarjeta-cuento', { c }) %><% }) %></div>
+      <% } else { %>
+        <div class="vacio">Muy pronto, el primer cuento.</div>
+      <% } %>
+    </div>
+  </section>
+</main>
+<%- include('partials/pie') %>

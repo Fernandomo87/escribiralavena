@@ -1,0 +1,54 @@
+<%- include('../partials/cabeza') %>
+<main class="admin">
+  <div class="wrap">
+    <div class="caja-cabeza">
+      <h1>Panel</h1>
+      <form method="post" action="/admin/salir"><button class="btn btn-borde btn-chico" style="color:var(--carbon);border-color:#D8D0C2" type="submit">Cerrar sesión</button></form>
+    </div>
+    <% if (aviso) { %><div class="aviso"><%= aviso %></div><% } %>
+
+    <section class="caja">
+      <div class="caja-cabeza"><h2>Cuentos</h2><a class="btn btn-negro btn-chico" href="/admin/cuentos/nuevo">+ Nuevo cuento</a></div>
+      <% if (!cuentos.length) { %><p style="color:#6B665C;margin:0">Todavía no hay cuentos. Crea el primero.</p><% } else { %>
+      <table class="tabla"><tbody>
+        <% cuentos.forEach(c => { %>
+        <tr>
+          <td><a href="/admin/cuentos/<%= c.id %>"><%= c.titulo %></a></td>
+          <td style="color:#6B665C"><%= fechaLarga(c.fecha) %></td>
+          <td><span class="estado <%= c.publicado ? 'si' : 'no' %>"><%= c.publicado ? 'Publicado' : 'Borrador' %></span></td>
+          <td style="text-align:right"><a href="/cuentos/<%= c.slug %>" target="_blank">Ver</a></td>
+        </tr>
+        <% }) %>
+      </tbody></table>
+      <% } %>
+    </section>
+
+    <section class="caja">
+      <div class="caja-cabeza"><h2>Libros</h2><a class="btn btn-borde btn-chico" style="color:var(--carbon);border-color:#D8D0C2" href="/admin/libros/nuevo">+ Nuevo libro</a></div>
+      <table class="tabla"><tbody>
+        <% libros.forEach(l => { %>
+        <tr>
+          <td><a href="/admin/libros/<%= l.id %>"><%= l.titulo %></a></td>
+          <td><span class="estado <%= l.visible ? 'si' : 'no' %>"><%= l.visible ? 'Visible' : 'Oculto' %></span></td>
+          <td style="text-align:right"><a href="/libros/<%= l.slug %>" target="_blank">Ver</a></td>
+        </tr>
+        <% }) %>
+      </tbody></table>
+    </section>
+
+    <section class="caja">
+      <div class="caja-cabeza"><h2>Páginas</h2></div>
+      <table class="tabla"><tbody>
+        <% paginas.forEach(p => { %>
+        <tr><td><a href="/admin/paginas/<%= p.clave %>"><%= p.titulo %></a></td><td style="text-align:right"><a href="/<%= p.clave %>" target="_blank">Ver</a></td></tr>
+        <% }) %>
+      </tbody></table>
+    </section>
+
+    <section class="caja">
+      <h2 style="margin-bottom:10px">Cómo dar formato al texto</h2>
+      <p style="margin:0;line-height:1.7;color:#4A463F">Deja una línea en blanco entre párrafos. Para <em>cursiva</em> escribe <code>*así*</code>; para <strong>negrita</strong>, <code>**así**</code>. Para una cita, empieza la línea con <code>&gt;</code>. Para un enlace: <code>[texto](https://...)</code>.</p>
+    </section>
+  </div>
+</main>
+<%- include('../partials/pie') %>

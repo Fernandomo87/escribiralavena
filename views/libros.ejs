@@ -1,0 +1,16 @@
+<%- include('partials/cabeza') %>
+<main>
+  <section class="wrap cabeza-pagina">
+    <span class="eyebrow" style="color:var(--amarillo)">Libros</span>
+    <h1>Mis libros</h1>
+    <p>Cuentos para leer sin anestesia y un manual de oficio para quienes dirigen escuelas.</p>
+  </section>
+  <section class="clara">
+    <div class="wrap seccion">
+      <div class="grilla">
+        <% libros.forEach(l => { %><%- include('partials/tarjeta-libro', { l }) %><% }) %>
+      </div>
+    </div>
+  </section>
+</main>
+<%- include('partials/pie') %>

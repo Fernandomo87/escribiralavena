@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title><%= titulo ? titulo + ' · Escribir a la vena' : 'Escribir a la vena · Fernando Muñoz O., escritor' %></title>
+<meta name="description" content="<%= typeof descripcion !== 'undefined' && descripcion ? descripcion : 'Libros directos a la vena, sin anestesia. Cuentos y libros de Fernando Muñoz O.' %>">
+<meta name="theme-color" content="#1C1B19">
+<meta property="og:site_name" content="Escribir a la vena">
+<meta property="og:title" content="<%= titulo || 'Escribir a la vena · Fernando Muñoz O.' %>">
+<meta property="og:locale" content="es_CL">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500;1,700&family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/estilo.css">
+<% if (ruta.startsWith('/admin')) { %><meta name="robots" content="noindex"><% } %>
+</head>
+<body>
+<header class="cabecera">
+  <div class="wrap">
+    <a class="marca" href="/">
+      <img src="/favicon.svg" alt="" width="44" height="44">
+      <span><b>Escribir a la vena</b><small>Fernando Muñoz O.</small></span>
+    </a>
+    <nav class="pestanas" aria-label="Secciones">
+      <% const pest = [['/', 'Inicio'], ['/libros', 'Libros'], ['/cuentos', 'Cuentos'], ['/sobre-mi', 'Sobre mí'], ['/charlas', 'Charlas'], ['/contacto', 'Contacto']];
+         pest.forEach(([href, txt]) => { const act = href === '/' ? ruta === '/' : ruta.startsWith(href); %>
+        <a href="<%= href %>" class="<%= act ? 'activa' : '' %>" <%- act ? 'aria-current="page"' : '' %>><%= txt %></a>
+      <% }) %>
+    </nav>
+  </div>
+</header>

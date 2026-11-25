@@ -1,0 +1,13 @@
+<article class="libro">
+  <% if (l.portada_id) { %><a href="/libros/<%= l.slug %>"><img src="/img/<%= l.portada_id %>" alt="Portada de <%= l.titulo %>" width="170"></a><% } %>
+  <div class="libro-info">
+    <span class="meta"><%= l.categoria %><% if (l.etiqueta) { %> <span class="chip" style="background:<%= l.color %>"><%= l.etiqueta %></span><% } %></span>
+    <h3><a href="/libros/<%= l.slug %>"><%= l.titulo %></a></h3>
+    <p><%= l.sinopsis %></p>
+    <% if (l.cita) { %><p class="cita" style="color:<%= l.color === '#1C1B19' ? '#8A6A00' : l.color %>">«<%= l.cita %>»</p><% } %>
+    <div class="acciones">
+      <% if (l.boton_enlace) { %><a class="btn btn-chico" style="background:<%= l.color %>;color:<%= l.color === '#1C1B19' ? '#F2C318' : '#fff' %>" href="<%= l.boton_enlace %>" target="_blank" rel="noopener"><%= l.boton_texto %><%= l.precio ? ' · ' + l.precio : '' %></a><% } %>
+      <a class="link-simple" href="/libros/<%= l.slug %>">Ver más</a>
+    </div>
+  </div>
+</article>

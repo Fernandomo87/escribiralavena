@@ -1,0 +1,21 @@
+<%- include('partials/cabeza') %>
+<main>
+  <section class="wrap cabeza-pagina">
+    <h1><%= pagina.titulo %></h1>
+    <% if (pagina.bajada) { %><p><%= pagina.bajada %></p><% } %>
+  </section>
+  <section class="lectura">
+    <div class="wrap">
+      <% if (pagina.imagen_id) { %>
+        <div class="pagina-con-foto"><img src="/img/<%= pagina.imagen_id %>" alt=""><div class="prosa"><%- md(pagina.cuerpo) %></div></div>
+      <% } else { %>
+        <div class="prosa estrecho" style="margin-top:0"><%- md(pagina.cuerpo) %></div>
+      <% } %>
+      <% if (pagina.clave === 'contacto' || pagina.clave === 'charlas') { %>
+        <div class="botones" style="margin-top:32px"><a class="btn btn-negro" href="https://ig.me/m/escribir.a.la.vena" target="_blank" rel="noopener">Escríbeme por Instagram</a></div>
+      <% } %>
+      <% if (admin && ['sobre-mi','charlas','contacto'].includes(pagina.clave)) { %><a class="volver" href="/admin/paginas/<%= pagina.clave %>">Editar esta página</a><% } %>
+    </div>
+  </section>
+</main>
+<%- include('partials/pie') %>

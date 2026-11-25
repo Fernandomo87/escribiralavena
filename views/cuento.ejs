@@ -1,0 +1,15 @@
+<%- include('partials/cabeza') %>
+<main class="lectura">
+  <article class="wrap estrecho">
+    <% if (!cuento.publicado) { %><div class="error" style="margin-bottom:24px">Borrador: solo tú puedes ver este cuento.</div><% } %>
+    <span class="eyebrow" style="color:var(--amarillo-osc)">Un cuento a la vena</span>
+    <h1 style="margin-top:12px"><%= cuento.titulo %></h1>
+    <% if (cuento.bajada) { %><p class="bajada"><%= cuento.bajada %></p><% } %>
+    <span class="fecha">Por Fernando Muñoz O. · <%= fechaLarga(cuento.fecha) %></span>
+    <% if (cuento.imagen_id) { %><img class="imagen-cuento" src="/img/<%= cuento.imagen_id %>" alt=""><% } %>
+    <div class="prosa"><%- md(cuento.cuerpo) %></div>
+    <a class="volver" href="/cuentos">← Más cuentos</a>
+    <% if (admin) { %> &nbsp; <a class="volver" href="/admin/cuentos/<%= cuento.id %>">Editar este cuento</a><% } %>
+  </article>
+</main>
+<%- include('partials/pie') %>

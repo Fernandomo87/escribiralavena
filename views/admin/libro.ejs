@@ -1,0 +1,40 @@
+<%- include('../partials/cabeza') %>
+<main class="admin">
+  <div class="wrap estrecho" style="max-width:900px">
+    <a href="/admin" class="volver" style="margin-top:0">← Volver al panel</a>
+    <h1 style="margin-top:16px"><%= l.id ? 'Editar libro' : 'Nuevo libro' %></h1>
+    <div class="caja">
+      <form method="post" action="/admin/libros/guardar" enctype="multipart/form-data" class="formulario">
+        <input type="hidden" name="id" value="<%= l.id || '' %>">
+        <div class="campo"><label for="titulo">Título</label><input type="text" id="titulo" name="titulo" value="<%= l.titulo %>" required></div>
+        <div class="fila">
+          <div class="campo"><label for="categoria">Categoría · editorial</label><input type="text" id="categoria" name="categoria" value="<%= l.categoria %>"></div>
+          <div class="campo"><label for="etiqueta">Etiqueta <span class="ayuda">(ej.: Segunda edición)</span></label><input type="text" id="etiqueta" name="etiqueta" value="<%= l.etiqueta %>"></div>
+        </div>
+        <div class="campo"><label for="sinopsis">Sinopsis corta <span class="ayuda">(para la tarjeta)</span></label><textarea id="sinopsis" name="sinopsis"><%= l.sinopsis %></textarea></div>
+        <div class="campo"><label for="descripcion">Descripción larga <span class="ayuda">(para la página del libro)</span></label><textarea id="descripcion" name="descripcion" style="min-height:200px"><%= l.descripcion %></textarea></div>
+        <div class="campo"><label for="cita">Cita destacada</label><input type="text" id="cita" name="cita" value="<%= l.cita %>"></div>
+        <div class="campo"><label for="ficha">Ficha <span class="ayuda">(una línea por dato, ej.: Editorial: Berilio)</span></label><textarea id="ficha" name="ficha"><%= l.ficha %></textarea></div>
+        <div class="fila">
+          <div class="campo"><label for="precio">Precio</label><input type="text" id="precio" name="precio" value="<%= l.precio %>"></div>
+          <div class="campo"><label for="boton_texto">Texto del botón</label><input type="text" id="boton_texto" name="boton_texto" value="<%= l.boton_texto %>"></div>
+        </div>
+        <div class="campo"><label for="boton_enlace">Enlace del botón</label><input type="url" id="boton_enlace" name="boton_enlace" value="<%= l.boton_enlace %>" placeholder="https://"></div>
+        <div class="fila">
+          <div class="campo"><label for="color">Color del libro</label><input type="text" id="color" name="color" value="<%= l.color %>" placeholder="#1C1B19"></div>
+          <div class="campo"><label for="orden">Orden <span class="ayuda">(1 aparece primero)</span></label><input type="number" id="orden" name="orden" value="<%= l.orden %>"></div>
+        </div>
+        <div class="campo"><label for="portada">Portada <span class="ayuda">(sube una nueva para reemplazarla)</span></label><input type="file" id="portada" name="portada" accept="image/jpeg,image/png,image/webp"></div>
+        <% if (l.portada_id) { %><img class="miniatura" src="/img/<%= l.portada_id %>" alt="Portada actual"><% } %>
+        <label class="check"><input type="checkbox" name="visible" <%= l.visible ? 'checked' : '' %>> Visible en el sitio</label>
+        <div class="barra-acciones"><button class="btn btn-negro" type="submit">Guardar</button></div>
+      </form>
+      <% if (l.id) { %>
+      <form method="post" action="/admin/libros/<%= l.id %>/borrar" style="margin-top:20px" onsubmit="return confirm('¿Borrar este libro?')">
+        <button class="btn btn-peligro btn-chico" type="submit">Borrar libro</button>
+      </form>
+      <% } %>
+    </div>
+  </div>
+</main>
+<%- include('../partials/pie') %>

@@ -1,0 +1,8 @@
+<a class="tarjeta-cuento" href="/cuentos/<%= c.slug %>">
+  <% if (c.imagen_id) { %><img src="/img/<%= c.imagen_id %>" alt="" loading="lazy"><% } else { %><span class="sin-imagen" aria-hidden="true">«»</span><% } %>
+  <div class="t">
+    <span class="fecha"><%= fechaLarga(c.fecha) %></span>
+    <h3><%= c.titulo %></h3>
+    <% if (c.bajada) { %><p><%= c.bajada %></p><% } %>
+  </div>
+</a>

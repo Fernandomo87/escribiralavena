@@ -1,0 +1,15 @@
+<%- include('../partials/cabeza') %>
+<main class="admin">
+  <div class="wrap">
+    <div class="caja entrar">
+      <h1 style="font-size:32px;margin-bottom:8px">Panel de administración</h1>
+      <p style="margin:0 0 24px;color:#6B665C">Ingresa tu contraseña para administrar el sitio.</p>
+      <% if (error) { %><div class="error" style="margin-bottom:20px"><%= error %></div><% } %>
+      <form method="post" action="/admin/entrar" class="formulario">
+        <div class="campo"><label for="clave">Contraseña</label><input type="password" id="clave" name="clave" autocomplete="current-password" required autofocus></div>
+        <button class="btn btn-negro" type="submit">Entrar</button>
+      </form>
+    </div>
+  </div>
+</main>
+<%- include('../partials/pie') %>

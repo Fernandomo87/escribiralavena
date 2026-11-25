@@ -1,0 +1,18 @@
+<%- include('partials/cabeza') %>
+<main>
+  <section class="wrap cabeza-pagina">
+    <span class="eyebrow" style="color:var(--amarillo)">Cuentos</span>
+    <h1>Un cuento a la vena</h1>
+    <p>Relatos y microrrelatos para leer gratis. Uno nuevo de vez en cuando.</p>
+  </section>
+  <section class="clara">
+    <div class="wrap seccion">
+      <% if (cuentos.length) { %>
+        <div class="lista-cuentos"><% cuentos.forEach(c => { %><%- include('partials/tarjeta-cuento', { c }) %><% }) %></div>
+      <% } else { %>
+        <div class="vacio">Muy pronto, el primer cuento.</div>
+      <% } %>
+    </div>
+  </section>
+</main>
+<%- include('partials/pie') %>
