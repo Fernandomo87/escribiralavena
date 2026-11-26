@@ -25,6 +25,8 @@
         </div>
         <div class="campo"><label for="portada">Portada <span class="ayuda">(sube una nueva para reemplazarla)</span></label><input type="file" id="portada" name="portada" accept="image/jpeg,image/png,image/webp"></div>
         <% if (l.portada_id) { %><img class="miniatura" src="/img/<%= l.portada_id %>" alt="Portada actual"><% } %>
+        <div class="campo" style="border-top:1px solid #ECE6DB;padding-top:20px"><label for="adelanto_titulo">Adelanto: título del capítulo <span class="ayuda">(opcional, ej.: Capítulo 1 · Aliro)</span></label><input type="text" id="adelanto_titulo" name="adelanto_titulo" value="<%= l.adelanto_titulo || '' %>"></div>
+        <div class="campo"><label for="adelanto">Adelanto: texto para leer gratis <span class="ayuda">(pega el capítulo; cada línea es un párrafo. Déjalo vacío si no quieres adelanto)</span></label><textarea class="largo" id="adelanto" name="adelanto" style="min-height:320px"><%= l.adelanto || '' %></textarea></div>
         <label class="check"><input type="checkbox" name="visible" <%= l.visible ? 'checked' : '' %>> Visible en el sitio</label>
         <div class="barra-acciones"><button class="btn btn-negro" type="submit">Guardar</button></div>
       </form>

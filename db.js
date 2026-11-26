@@ -71,6 +71,8 @@ export async function iniciarBase() {
   await q(`
     ALTER TABLE cuentos ADD COLUMN IF NOT EXISTS formato TEXT DEFAULT 'md';
     ALTER TABLE paginas ADD COLUMN IF NOT EXISTS formato TEXT DEFAULT 'md';
+    ALTER TABLE libros ADD COLUMN IF NOT EXISTS adelanto_titulo TEXT DEFAULT '';
+    ALTER TABLE libros ADD COLUMN IF NOT EXISTS adelanto TEXT DEFAULT '';
     CREATE TABLE IF NOT EXISTS vistas (
       id BIGSERIAL PRIMARY KEY,
       dia DATE NOT NULL DEFAULT (now() AT TIME ZONE 'America/Santiago')::date,

@@ -282,3 +282,18 @@ article .prosa{text-align:justify;hyphens:auto;-webkit-hyphens:auto}
   .adm-principal{padding:20px 16px 64px}
   .editor-caja .ql-editor{padding:20px 18px;min-height:360px}
 }
+
+/* Adelanto de capítulo (se despliega con "Seguir leyendo") */
+.adelanto{margin-top:12px;background:#fff;border-radius:12px;padding:32px 36px 28px;position:relative;scroll-margin-top:96px}
+.adelanto-cabeza h2{margin:6px 0 0;font-size:30px}
+.adelanto-check{position:absolute;opacity:0;pointer-events:none}
+.adelanto-texto{position:relative;max-height:340px;overflow:hidden;margin-top:20px;font-size:18px;text-align:justify;hyphens:auto;-webkit-hyphens:auto}
+.adelanto-texto::after{content:"";position:absolute;left:0;right:0;bottom:0;height:160px;background:linear-gradient(rgba(255,255,255,0),#fff)}
+.adelanto-check:checked ~ .adelanto-texto{max-height:none}
+.adelanto-check:checked ~ .adelanto-texto::after{display:none}
+.adelanto-boton{margin-top:8px;cursor:pointer}
+.adelanto-boton .ab-menos{display:none}
+.adelanto-check:checked ~ .adelanto-boton .ab-mas{display:none}
+.adelanto-check:checked ~ .adelanto-boton .ab-menos{display:inline}
+.adelanto-check:focus-visible ~ .adelanto-boton{outline:2px solid var(--amarillo);outline-offset:3px}
+@media (max-width:640px){.adelanto{padding:24px 20px}.adelanto-texto{font-size:17px;max-height:300px}}

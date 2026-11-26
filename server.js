@@ -78,6 +78,10 @@ const lineas = (t = '') => t.split('\n').map((l) => l.trim()).filter(Boolean).ma
   return i > 0 ? { k: l.slice(0, i).trim(), v: l.slice(i + 1).trim() } : { k: '', v: l };
 });
 const miles = (n) => Number(n || 0).toLocaleString('es-CL');
+// Texto plano a párrafos: cada línea con contenido es un párrafo (como se pega desde Word)
+const escapar = (t = '') => t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+const parrafos = (t = '') => t.split(/\r?\n/).map((l) => l.trim()).filter(Boolean)
+  .map((l) => '<p>' + escapar(l).replace(/\*([^*\n]+)\*/g, '<em>$1</em>') + '</p>').join('\n');
 
 async function slugUnico(tabla, base, id = null) {
   let slug = slugify(base), n = 2;
@@ -113,6 +117,7 @@ app.use((req, res, next) => {
   res.locals.fechaCorta = fechaCorta;
   res.locals.lineas = lineas;
   res.locals.miles = miles;
+  res.locals.parrafos = parrafos;
   res.locals.ruta = req.path;
   res.locals.admin = !!req.session?.admin;
   res.locals.v = VERSION;
@@ -295,7 +300,7 @@ app.get('/admin/libros', exigirAdmin, async (req, res) => {
 });
 
 app.get('/admin/libros/nuevo', exigirAdmin, (req, res) =>
-  res.render('admin/libro', { titulo: 'Nuevo libro', seccion: 'libros', l: { id: null, titulo: '', categoria: '', etiqueta: '', sinopsis: '', descripcion: '', cita: '', ficha: '', precio: '', boton_texto: 'Comprar', boton_enlace: '', color: '#1C1B19', orden: 10, visible: true, portada_id: null } }));
+  res.render('admin/libro', { titulo: 'Nuevo libro', seccion: 'libros', l: { id: null, titulo: '', categoria: '', etiqueta: '', sinopsis: '', descripcion: '', cita: '', ficha: '', precio: '', boton_texto: 'Comprar', boton_enlace: '', color: '#1C1B19', orden: 10, visible: true, portada_id: null, adelanto_titulo: '', adelanto: '' } }));
 
 app.get('/admin/libros/:id', exigirAdmin, async (req, res, next) => {
   const r = await q('SELECT * FROM libros WHERE id=$1', [parseInt(req.params.id, 10) || 0]);
@@ -309,17 +314,18 @@ app.post('/admin/libros/guardar', exigirAdmin, subir.single('portada'), async (r
   const titulo = (b.titulo || '').trim() || 'Sin título';
   const color = /^#[0-9a-fA-F]{6}$/.test(b.color || '') ? b.color : '#1C1B19';
   const vals = [titulo, b.categoria || '', b.etiqueta || '', b.sinopsis || '', b.descripcion || '', b.cita || '', b.ficha || '',
-    b.precio || '', b.boton_texto || 'Comprar', b.boton_enlace || '', color, parseInt(b.orden, 10) || 0, b.visible === 'on'];
+    b.precio || '', b.boton_texto || 'Comprar', b.boton_enlace || '', color, parseInt(b.orden, 10) || 0, b.visible === 'on',
+    (b.adelanto_titulo || '').trim(), b.adelanto || ''];
   const nuevaImg = await guardarImagen(req.file);
   if (id) {
     const slug = await slugUnico('libros', titulo, id);
     await q(`UPDATE libros SET titulo=$1, categoria=$2, etiqueta=$3, sinopsis=$4, descripcion=$5, cita=$6, ficha=$7, precio=$8,
-             boton_texto=$9, boton_enlace=$10, color=$11, orden=$12, visible=$13, slug=$14,
-             portada_id = COALESCE($15, portada_id) WHERE id=$16`, [...vals, slug, nuevaImg, id]);
+             boton_texto=$9, boton_enlace=$10, color=$11, orden=$12, visible=$13, adelanto_titulo=$14, adelanto=$15, slug=$16,
+             portada_id = COALESCE($17, portada_id) WHERE id=$18`, [...vals, slug, nuevaImg, id]);
   } else {
     const slug = await slugUnico('libros', titulo);
-    await q(`INSERT INTO libros (titulo, categoria, etiqueta, sinopsis, descripcion, cita, ficha, precio, boton_texto, boton_enlace, color, orden, visible, slug, portada_id)
-             VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15)`, [...vals, slug, nuevaImg]);
+    await q(`INSERT INTO libros (titulo, categoria, etiqueta, sinopsis, descripcion, cita, ficha, precio, boton_texto, boton_enlace, color, orden, visible, adelanto_titulo, adelanto, slug, portada_id)
+             VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17)`, [...vals, slug, nuevaImg]);
   }
   res.redirect('/admin/libros?ok=' + encodeURIComponent('Libro guardado.'));
 });

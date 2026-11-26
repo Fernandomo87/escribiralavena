@@ -16,6 +16,17 @@
         <% const d = lineas(libro.ficha); if (d.length) { %>
         <dl class="datos"><% d.forEach(x => { %><dt><%= x.k %></dt><dd><%= x.v %></dd><% }) %></dl>
         <% } %>
+        <% if (libro.adelanto && libro.adelanto.trim()) { %>
+        <section class="adelanto" id="adelanto" aria-labelledby="adelanto-titulo">
+          <input type="checkbox" id="adelanto-abrir" class="adelanto-check">
+          <div class="adelanto-cabeza">
+            <span class="eyebrow" style="color:<%= libro.color === '#1C1B19' ? '#8A6A00' : libro.color %>">Adelanto gratis</span>
+            <h2 id="adelanto-titulo"><%= libro.adelanto_titulo || 'Lee el primer capítulo' %></h2>
+          </div>
+          <div class="adelanto-texto prosa"><%- parrafos(libro.adelanto) %></div>
+          <label for="adelanto-abrir" class="btn btn-negro btn-chico adelanto-boton"><span class="ab-mas">Seguir leyendo</span><span class="ab-menos">Cerrar el capítulo</span></label>
+        </section>
+        <% } %>
         <a class="volver" href="/libros">← Todos los libros</a>
       </div>
     </div>

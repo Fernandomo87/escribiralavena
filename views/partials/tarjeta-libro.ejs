@@ -7,7 +7,7 @@
     <% if (l.cita) { %><p class="cita" style="color:<%= l.color === '#1C1B19' ? '#8A6A00' : l.color %>">«<%= l.cita %>»</p><% } %>
     <div class="acciones">
       <% if (l.boton_enlace) { %><a class="btn btn-chico" style="background:<%= l.color %>;color:<%= l.color === '#1C1B19' ? '#F2C318' : '#fff' %>" href="<%= l.boton_enlace %>" target="_blank" rel="noopener"><%= l.boton_texto %><%= l.precio ? ' · ' + l.precio : '' %></a><% } %>
-      <a class="link-simple" href="/libros/<%= l.slug %>">Ver más</a>
+      <% if (l.adelanto && l.adelanto.trim()) { %><a class="link-simple" href="/libros/<%= l.slug %>#adelanto">Leer el capítulo 1</a><% } else { %><a class="link-simple" href="/libros/<%= l.slug %>">Ver más</a><% } %>
     </div>
   </div>
 </article>
