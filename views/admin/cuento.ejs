@@ -1,33 +1,44 @@
-<%- include('../partials/cabeza') %>
-<main class="admin">
-  <div class="wrap estrecho" style="max-width:900px">
-    <a href="/admin" class="volver" style="margin-top:0">← Volver al panel</a>
-    <h1 style="margin-top:16px"><%= c.id ? 'Editar cuento' : 'Nuevo cuento' %></h1>
-    <div class="caja">
-      <form method="post" action="/admin/cuentos/guardar" enctype="multipart/form-data" class="formulario">
-        <input type="hidden" name="id" value="<%= c.id || '' %>">
-        <div class="campo"><label for="titulo">Título</label><input type="text" id="titulo" name="titulo" value="<%= c.titulo %>" required></div>
-        <div class="campo"><label for="bajada">Bajada <span class="ayuda">(opcional, una o dos líneas que aparecen bajo el título)</span></label><input type="text" id="bajada" name="bajada" value="<%= c.bajada %>"></div>
-        <div class="campo"><label for="cuerpo">Texto del cuento</label><span class="ayuda">Pega o escribe el cuento. Deja una línea en blanco entre párrafos. *cursiva* · **negrita**</span><textarea class="largo" id="cuerpo" name="cuerpo"><%= c.cuerpo %></textarea></div>
-        <div class="fila">
-          <div class="campo"><label for="fecha">Fecha</label><input type="date" id="fecha" name="fecha" value="<%= c.fecha %>"></div>
-          <div class="campo"><label for="imagen">Imagen <span class="ayuda">(opcional, JPG o PNG, hasta 5 MB)</span></label><input type="file" id="imagen" name="imagen" accept="image/jpeg,image/png,image/webp"></div>
-        </div>
-        <% if (c.imagen_id) { %>
-          <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap"><img class="miniatura" src="/img/<%= c.imagen_id %>" alt="Imagen actual"><label class="check"><input type="checkbox" name="quitar_imagen"> Quitar imagen</label></div>
-        <% } %>
-        <label class="check"><input type="checkbox" name="publicado" <%= c.publicado ? 'checked' : '' %>> Publicado (visible en el sitio)</label>
-        <div class="barra-acciones">
-          <button class="btn btn-negro" type="submit">Guardar</button>
-          <% if (c.id) { %><a class="link-simple" href="/cuentos/<%= c.slug %>" target="_blank">Ver en el sitio</a><% } %>
-        </div>
-      </form>
-      <% if (c.id) { %>
-      <form method="post" action="/admin/cuentos/<%= c.id %>/borrar" style="margin-top:20px" onsubmit="return confirm('¿Borrar este cuento para siempre?')">
-        <button class="btn btn-peligro btn-chico" type="submit">Borrar cuento</button>
-      </form>
-      <% } %>
-    </div>
+<%- include('_cabeza', { conEditor: true }) %>
+<form method="post" action="/admin/cuentos/guardar" enctype="multipart/form-data" class="editor-form">
+  <input type="hidden" name="id" value="<%= c.id || '' %>">
+  <input type="hidden" name="cuerpo" value="">
+  <div class="barra-editor">
+    <a href="/admin/cuentos" class="volver-sutil">← Volver</a>
+    <span class="estado <%= c.publicado ? 'si' : 'no' %>"><%= c.publicado ? 'Publicado' : 'Borrador' %></span>
+    <% if (c.id) { %><span class="sutil"><%= miles(c.vistas) %> vistas</span><% } %>
+    <span class="espacio"></span>
+    <% if (c.id) { %><a class="link-simple" href="/cuentos/<%= c.slug %>" target="_blank" rel="noopener"><%= c.publicado ? 'Ver en el sitio' : 'Vista previa' %></a><% } %>
+    <% if (c.publicado) { %>
+      <button class="btn btn-borde-claro btn-chico" type="submit" name="accion" value="borrador">Pasar a borrador</button>
+      <button class="btn btn-negro btn-chico" type="submit" name="accion" value="publicar">Guardar cambios</button>
+    <% } else { %>
+      <button class="btn btn-borde-claro btn-chico" type="submit" name="accion" value="borrador">Guardar borrador</button>
+      <button class="btn btn-amarillo btn-chico" type="submit" name="accion" value="publicar">Publicar</button>
+    <% } %>
   </div>
-</main>
-<%- include('../partials/pie') %>
+
+  <div class="campo"><label for="titulo">Título</label><input class="titulo-grande" type="text" id="titulo" name="titulo" value="<%= c.titulo %>" placeholder="El título del cuento" required></div>
+  <div class="campo"><label for="bajada">Bajada <span class="ayuda">(una o dos líneas que aparecen bajo el título y en las tarjetas)</span></label><textarea id="bajada" name="bajada" rows="2" style="min-height:72px" placeholder="Una frase que invite a leer."><%= c.bajada %></textarea></div>
+
+  <div class="campo">
+    <label>Texto del cuento</label>
+    <div class="editor-caja">
+      <div id="editor" data-placeholder="Escribe o pega aquí tu cuento…"><%- html %></div>
+    </div>
+    <div class="editor-info"><span id="contador"></span><span id="estado-editor" role="status"></span></div>
+  </div>
+
+  <div class="fila">
+    <div class="campo"><label for="fecha">Fecha</label><input type="date" id="fecha" name="fecha" value="<%= c.fecha %>"></div>
+    <div class="campo"><label for="imagen">Imagen de portada <span class="ayuda">(opcional, hasta 5 MB)</span></label><input type="file" id="imagen" name="imagen" accept="image/jpeg,image/png,image/webp"></div>
+  </div>
+  <% if (c.imagen_id) { %>
+    <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap"><img class="miniatura" src="/img/<%= c.imagen_id %>" alt="Imagen de portada actual"><label class="check"><input type="checkbox" name="quitar_imagen"> Quitar imagen de portada</label></div>
+  <% } %>
+</form>
+<% if (c.id) { %>
+<form method="post" action="/admin/cuentos/<%= c.id %>/borrar" class="zona-borrar" onsubmit="return confirm('¿Borrar este cuento para siempre? No se puede deshacer.')">
+  <button class="btn btn-peligro btn-chico" type="submit">Borrar cuento</button>
+</form>
+<% } %>
+<%- include('_pie', { conEditor: true }) %>

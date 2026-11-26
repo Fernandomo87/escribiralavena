@@ -1,0 +1,26 @@
+<%- include('_cabeza') %>
+<div class="adm-cabeza">
+  <h1>Cuentos</h1>
+  <a class="btn btn-negro btn-chico" href="/admin/cuentos/nuevo">+ Escribir cuento</a>
+</div>
+<section class="caja">
+  <% if (!cuentos.length) { %><p class="sutil" style="margin:0">Todavía no hay cuentos. Escribe el primero.</p><% } else { %>
+  <div class="tabla-envoltura">
+  <table class="tabla">
+    <thead><tr><th>Título</th><th>Fecha</th><th>Estado</th><th style="text-align:right">Vistas</th><th></th></tr></thead>
+    <tbody>
+    <% cuentos.forEach(c => { %>
+      <tr>
+        <td><a href="/admin/cuentos/<%= c.id %>"><%= c.titulo %></a></td>
+        <td class="sutil"><%= fechaLarga(c.fecha) %></td>
+        <td><span class="estado <%= c.publicado ? 'si' : 'no' %>"><%= c.publicado ? 'Publicado' : 'Borrador' %></span></td>
+        <td style="text-align:right;font-weight:600"><%= miles(c.vistas) %></td>
+        <td style="text-align:right"><a href="/cuentos/<%= c.slug %>" target="_blank" rel="noopener">Ver</a></td>
+      </tr>
+    <% }) %>
+    </tbody>
+  </table>
+  </div>
+  <% } %>
+</section>
+<%- include('_pie') %>

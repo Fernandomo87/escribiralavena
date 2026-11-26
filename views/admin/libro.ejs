@@ -1,8 +1,7 @@
-<%- include('../partials/cabeza') %>
-<main class="admin">
-  <div class="wrap estrecho" style="max-width:900px">
-    <a href="/admin" class="volver" style="margin-top:0">← Volver al panel</a>
-    <h1 style="margin-top:16px"><%= l.id ? 'Editar libro' : 'Nuevo libro' %></h1>
+<%- include('_cabeza') %>
+  <div style="max-width:900px">
+    <a href="/admin/libros" class="volver-sutil">← Volver a libros</a>
+    <h1 style="margin-top:12px"><%= l.id ? 'Editar libro' : 'Nuevo libro' %></h1>
     <div class="caja">
       <form method="post" action="/admin/libros/guardar" enctype="multipart/form-data" class="formulario">
         <input type="hidden" name="id" value="<%= l.id || '' %>">
@@ -36,5 +35,4 @@
       <% } %>
     </div>
   </div>
-</main>
-<%- include('../partials/pie') %>
+<%- include('_pie') %>

@@ -1,0 +1,55 @@
+<%- include('_cabeza') %>
+<div class="adm-cabeza">
+  <h1>Resumen</h1>
+  <div class="adm-botones">
+    <a class="btn btn-borde-claro btn-chico" href="/admin/paginas/sobre-mi">Editar "Sobre mí"</a>
+    <a class="btn btn-negro btn-chico" href="/admin/cuentos/nuevo">+ Escribir cuento</a>
+  </div>
+</div>
+
+<div class="tarjetas">
+  <div class="tarjeta"><span class="t-ico" style="background:#DDF2E9;color:#0B5C3E"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 4h12l4 4v12H4z"/><path d="M8 12h8M8 16h5"/></svg></span><span class="t-nombre">Cuentos publicados</span><b><%= miles(t.publicados) %></b></div>
+  <div class="tarjeta"><span class="t-ico" style="background:#F3EEE3;color:#8A6A00"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></span><span class="t-nombre">Vistas totales</span><b><%= miles(t.vistas) %></b></div>
+  <div class="tarjeta"><span class="t-ico" style="background:#E5EEF8;color:#1E4E86"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="9" cy="8" r="4"/><path d="M2 20c0-4 3-6 7-6s7 2 7 6M17 4a4 4 0 0 1 0 8M22 20c0-3-2-5-4-6"/></svg></span><span class="t-nombre">Visitantes (30 días)</span><b><%= miles(t.visitantes30) %></b></div>
+  <div class="tarjeta"><span class="t-ico" style="background:#FBF0D5;color:#7A5A00"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg></span><span class="t-nombre">Borradores</span><b><%= miles(t.borradores) %></b></div>
+</div>
+
+<div class="adm-dos">
+  <section class="caja">
+    <div class="caja-cabeza"><h2>Visitantes por día (14 días)</h2><span class="sutil"><%= miles(total14) %> en total</span></div>
+    <div class="grafico" role="img" aria-label="Gráfico de visitantes por día en los últimos 14 días">
+      <% dias.forEach(d => { const h = Math.round((d.visitantes / max) * 100); %>
+        <div class="barra-dia" title="<%= fechaCorta(d.dia) %>: <%= d.visitantes %> visitantes, <%= d.vistas %> vistas">
+          <span class="num"><%= d.visitantes || '' %></span>
+          <span class="barra" style="height:<%= Math.max(h, d.visitantes ? 4 : 1) %>%"></span>
+        </div>
+      <% }) %>
+    </div>
+    <div class="grafico-fechas"><span><%= fechaCorta(dias[0].dia) %></span><span><%= fechaCorta(dias[dias.length - 1].dia) %></span></div>
+    <p class="sutil" style="margin:12px 0 0">Lecturas reales del sitio, sin contar tus visitas ni las de robots.<% if (t.desde) { %> Se registran desde el <%= fechaLarga(t.desde) %>.<% } else { %> Todavía no hay visitas registradas.<% } %></p>
+  </section>
+
+  <section class="caja">
+    <div class="caja-cabeza"><h2>Páginas más vistas</h2></div>
+    <% if (!paginasTop.length) { %><p class="sutil" style="margin:0">Aún no hay datos.</p><% } else { const m = paginasTop[0].vistas; %>
+      <div class="lista-barras">
+        <% const nombres = { '/': 'Inicio', '/libros': 'Libros', '/cuentos': 'Lista de cuentos', '/sobre-mi': 'Sobre mí', '/charlas': 'Charlas', '/contacto': 'Contacto' };
+           paginasTop.forEach(p => { const etq = p.titulo ? '«' + p.titulo + '»' : (nombres[p.ruta] || p.ruta.replace('/libros/', 'Libro: ')); %>
+          <div class="fila-barra"><span class="etq" title="<%= p.ruta %>"><%= etq %></span><span class="pista"><span style="width:<%= Math.round(p.vistas / m * 100) %>%"></span></span><b><%= p.vistas %></b></div>
+        <% }) %>
+      </div>
+    <% } %>
+  </section>
+</div>
+
+<section class="caja">
+  <div class="caja-cabeza"><h2>Los cuentos más leídos</h2><a class="ver-todo" href="/admin/cuentos">Ver todos los cuentos →</a></div>
+  <% if (!top.length) { %><p class="sutil" style="margin:0">Todavía no hay cuentos publicados.</p><% } else { %>
+  <ol class="ranking">
+    <% top.forEach((c, i) => { %>
+      <li><span class="pos"><%= i + 1 %></span><a href="/admin/cuentos/<%= c.id %>"><%= c.titulo %></a><b><%= miles(c.vistas) %></b></li>
+    <% }) %>
+  </ol>
+  <% } %>
+</section>
+<%- include('_pie') %>

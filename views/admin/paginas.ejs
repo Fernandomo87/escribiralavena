@@ -1,0 +1,15 @@
+<%- include('_cabeza') %>
+<div class="adm-cabeza"><h1>Páginas</h1></div>
+<section class="caja">
+  <div class="tabla-envoltura">
+  <table class="tabla">
+    <thead><tr><th>Página</th><th>Bajada</th><th style="text-align:right">Vistas</th><th></th></tr></thead>
+    <tbody>
+    <% paginas.forEach(p => { %>
+      <tr><td><a href="/admin/paginas/<%= p.clave %>"><%= p.titulo %></a></td><td class="sutil"><%= p.bajada %></td><td style="text-align:right;font-weight:600"><%= miles(p.vistas) %></td><td style="text-align:right"><a href="/<%= p.clave %>" target="_blank" rel="noopener">Ver</a></td></tr>
+    <% }) %>
+    </tbody>
+  </table>
+  </div>
+</section>
+<%- include('_pie') %>

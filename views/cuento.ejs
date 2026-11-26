@@ -7,7 +7,7 @@
     <% if (cuento.bajada) { %><p class="bajada"><%= cuento.bajada %></p><% } %>
     <span class="fecha">Por Fernando Muñoz O. · <%= fechaLarga(cuento.fecha) %></span>
     <% if (cuento.imagen_id) { %><img class="imagen-cuento" src="/img/<%= cuento.imagen_id %>" alt=""><% } %>
-    <div class="prosa"><%- md(cuento.cuerpo) %></div>
+    <div class="prosa"><%- contenido(cuento) %></div>
     <a class="volver" href="/cuentos">← Más cuentos</a>
     <% if (admin) { %> &nbsp; <a class="volver" href="/admin/cuentos/<%= cuento.id %>">Editar este cuento</a><% } %>
   </article>

@@ -67,6 +67,22 @@ export async function iniciarBase() {
     );
   `);
 
+  // Versión 2: editor con formato (HTML) y contador de vistas
+  await q(`
+    ALTER TABLE cuentos ADD COLUMN IF NOT EXISTS formato TEXT DEFAULT 'md';
+    ALTER TABLE paginas ADD COLUMN IF NOT EXISTS formato TEXT DEFAULT 'md';
+    CREATE TABLE IF NOT EXISTS vistas (
+      id BIGSERIAL PRIMARY KEY,
+      dia DATE NOT NULL DEFAULT (now() AT TIME ZONE 'America/Santiago')::date,
+      ruta TEXT NOT NULL,
+      cuento_id INTEGER REFERENCES cuentos(id) ON DELETE SET NULL,
+      visitante TEXT NOT NULL,
+      creada TIMESTAMPTZ DEFAULT now()
+    );
+    CREATE INDEX IF NOT EXISTS vistas_dia_idx ON vistas (dia);
+    CREATE INDEX IF NOT EXISTS vistas_cuento_idx ON vistas (cuento_id);
+  `);
+
   const { rows } = await q('SELECT count(*)::int AS n FROM libros');
   if (rows[0].n === 0) await sembrar();
 }

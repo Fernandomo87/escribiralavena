@@ -1,0 +1,20 @@
+<%- include('_cabeza') %>
+<div class="adm-cabeza"><h1>Libros</h1><a class="btn btn-negro btn-chico" href="/admin/libros/nuevo">+ Nuevo libro</a></div>
+<section class="caja">
+  <div class="tabla-envoltura">
+  <table class="tabla">
+    <thead><tr><th></th><th>Título</th><th>Estado</th><th></th></tr></thead>
+    <tbody>
+    <% libros.forEach(l => { %>
+      <tr>
+        <td style="width:56px"><% if (l.portada_id) { %><img src="/img/<%= l.portada_id %>" alt="" style="width:40px;border-radius:3px"><% } %></td>
+        <td><a href="/admin/libros/<%= l.id %>"><%= l.titulo %></a><% if (l.etiqueta) { %> <span class="sutil">· <%= l.etiqueta %></span><% } %></td>
+        <td><span class="estado <%= l.visible ? 'si' : 'no' %>"><%= l.visible ? 'Visible' : 'Oculto' %></span></td>
+        <td style="text-align:right"><a href="/libros/<%= l.slug %>" target="_blank" rel="noopener">Ver</a></td>
+      </tr>
+    <% }) %>
+    </tbody>
+  </table>
+  </div>
+</section>
+<%- include('_pie') %>
